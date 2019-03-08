@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  lingo:
+    github: rmosolgo/lingo
+    commit: 2c091c352df904dd16efe777c0ace1a27e2cebde
+

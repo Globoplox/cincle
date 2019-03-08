@@ -1,0 +1,17 @@
+name: dice
+version: 0.1.0
+
+authors:
+  - Pierre Rousselle <pierre.rousselle@dataforall.fr>
+
+targets:
+  dice:
+    main: src/dice.cr
+    
+dependencies:
+  lingo:
+    github: rmosolgo/lingo
+
+crystal: 0.26.1
+
+license: MIT
