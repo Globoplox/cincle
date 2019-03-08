@@ -5,7 +5,9 @@ It aim to help to build meaningfull ast by altering the parser, generating a def
 
 ## Installation
 
-TODO: Write installation instructions here
+dependencies:
+  cincle:
+    github: globoplox/cincle
 
 ## Usage
 
@@ -69,4 +71,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-github-user](https://github.com/your-github-user) Pierre Rousselle - creator, maintainer
+- [Globoplox](https://github.com/globoplox) Pierre Rousselle - creator, maintainer

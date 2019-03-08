@@ -1,12 +1,12 @@
-name: dice
+name: cincle
 version: 0.1.0
 
 authors:
-  - Pierre Rousselle <pierre.rousselle@dataforall.fr>
+  - Pierre Rousselle <globoplox+cincle@gmail.com>
 
 targets:
-  dice:
-    main: src/dice.cr
+  cincle:
+    main: src/cincle.cr
     
 dependencies:
   lingo:
