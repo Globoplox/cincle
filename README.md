@@ -5,9 +5,11 @@ It aim to help to build meaningfull ast by altering the parser, generating a def
 
 ## Installation
 
+```yml
 dependencies:
   cincle:
     github: globoplox/cincle
+```
 
 ## Usage
 
