@@ -27,7 +27,8 @@ module Expression
  rule :minus { str("-") }
  rule :operator { plus | minus }
  rule :expression { number >> operator >> number }
-
+ rule(:hey) { str("") }
+ 
  root :expression
 end
 

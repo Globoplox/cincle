@@ -2,7 +2,7 @@ require "lingo"
 
 module Cincle
 
-  VERSION = "0_1_0"
+  VERSION = "0_1_1"
     
   macro included
     RULES = {} of Object => Object
@@ -39,11 +39,12 @@ module Cincle
           end
           \{%
             noun = name.underscore.id
+            consonants = ['z', 'r', 't', 'p', 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'w', 'x', 'c', 'v', 'b', 'n']
             plural = if ["s", "ss", "sh", "ch", "x", "z", "o", "is"].any? { |suffix| noun.ends_with? suffix }
               "#{noun}es"
             elsif ["f", "fe"].any? { |suffix| noun.ends_with? suffix }
               "#{noun.rchop}es"
-            elsif noun.ends_with?("y") && CONSONANTS.includes? noun.char_at(noun.size - 2)
+            elsif noun.ends_with?("y") && consonants.includes? noun.chars[noun.size - 2]
               "#{noun.rchop}ies"
             else
               "#{noun}s"
