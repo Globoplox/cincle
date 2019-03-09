@@ -38,16 +38,16 @@ module Cincle
             @nodes[:\{{name.underscore.id}}][index].as(Nodes::\{{name.camelcase.id}})
           end
           \{%
-            noun = name.underscore.id
+            noun = name.underscore.chars.join ""
             consonants = ['z', 'r', 't', 'p', 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'w', 'x', 'c', 'v', 'b', 'n']
             plural = if ["s", "ss", "sh", "ch", "x", "z", "o", "is"].any? { |suffix| noun.ends_with? suffix }
-              "#{noun}es"
+              "#{noun.id}es"
             elsif ["f", "fe"].any? { |suffix| noun.ends_with? suffix }
-              "#{noun.rchop}es"
+              "#{noun[0...(noun.size-1)].id}es"
             elsif noun.ends_with?("y") && consonants.includes? noun.chars[noun.size - 2]
-              "#{noun.rchop}ies"
+              "#{noun[0...(noun.size-1)].id}ies"
             else
-              "#{noun}s"
+              "#{noun.id}s"
             end
           %}
           def \{{plural.id}}
