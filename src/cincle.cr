@@ -2,8 +2,8 @@ require "lingo"
 
 module Cincle
 
-  VERSION = "0_1_1"
-    
+  VERSION = "0_2_0"
+  
   macro included
     RULES = {} of Object => Object
     ROOT = {} of Symbol => Object
@@ -19,12 +19,36 @@ module Cincle
     end
 
     macro node(symbol, &block)
-      \{% NODES[symbol.chars.join ""] = block %}
+      \{%
+        node = NODES[symbol.chars.join ""] ? NODES[symbol.chars.join ""] : {:super => [] of Object}
+        node[:block] = block
+        NODES[symbol.chars.join ""] = node
+      %}
+    end
+
+    macro onion(symbol, children, &block)
+      module Unions::\{{symbol.camelcase.id}}
+         \{{block.body}}
+      end
+      \{% for child in children %}
+        \{%
+          node = NODES[child.chars.join ""] ? NODES[child.chars.join ""] : {:super => [] of Object}
+          node[:super].push "Unions::#{symbol.camelcase.id}"
+          NODES[child.chars.join ""] = node
+        %}
+      \{% end %}
+      node \{{symbol}} {
+        def onion
+          [\{{ (children.map { |child| "#{child.underscore.id}?".id } ).splat }}].compact.first.as(\{{ "Unions::#{symbol.camelcase.id}".id }})
+        end
+      }
+      rule \{{symbol}} { \{{ ((children.map &.id).join "|").id }} }
     end
 
     macro _finished
 
       class Node
+
         def initialize(@nodes : Hash(Symbol, Array(Node)), @raw : String)
         end
         def raw
@@ -59,7 +83,12 @@ module Cincle
       module Nodes
         \{% for name, block in RULES %}
           class \{{name.camelcase.id}} < Node
-            \{{ NODES[name].body if NODES[name] }}                          
+            \{% if (NODES[name] && NODES[name][:block]) %}
+              \{{ NODES[name][:block].body }}
+              \{% for interface in NODES[name][:super] %}
+                include \{{interface.id}}
+              \{% end %}
+            \{% end %}
           end
         \{% end %}
       end
@@ -118,7 +147,7 @@ module Cincle
         \{% debug() %}
         \{% puts system "echo -e \"\e[36;1mEnd of Cincle parser for \e[33;1m#{@type.name}\e[36;1m.\e[0m\"" %}
       \{% end %}
+
     end
   end
-
 end
