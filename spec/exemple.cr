@@ -1,93 +1,33 @@
 require "../src/cincle"
 
-module Expression
-  
+module Exemple::Expression
  include Cincle
 
- # node :number {
- #   def val
- #     raw.to_f
- #   end
- # }
-
- # node :operator {
- #   def apply(operands) : Float64
- #     operands.reduce { |a,b|
-       
- #     }
- #   end
- # }
-
- # node :operand {
- #   def val : Float64
- #     (groups + numbers).first.val
- #   end
- # }
- 
- # node :operation {
- #   def val : Float64
- #     6.8#access the ordered operators and operands
- #   end
- # }
-
- # node :group {
- #   def val : Float64
- #     expression.val
- #   end
- # }
-
- # node :expression {
- #   def val : Float64
- #     case self
- #     when .group? then group.val
- #     when .operation? then operation.val
- #     else raise "Unsupported expression #{@nodes}"
- #     end
- #   end
- # }
- 
- # rule :number { match(/\d+(\.\d+)?/) }
- # rule :plus { str("+") }
- # rule :minus { str("-") }
- # rule :time { str("*") }
- # rule :divide { str("/") }
- # rule :operand { group | number }
- # rule :operation { operand >> ((plus | minus | time | divide) >> operand).repeat(0) }
- # rule :group { str("(") >> expression >> str(")") }
- # rule :expression { operation | group }
-
- # rule(:hey) { str("") }
- # rule(:wife) { str("") }
- # rule(:hgy) { str("") }
-
- node :la {
+ node :number {
    def val
-     "A"
+     raw.to_i
    end
  }
- rule :la { str "a" }
 
- node :lb {
-   def val
-     "B"
+ node :operator {
+   def apply(operands)
+     operands.reduce { |a,b| plus? ? a + b : a - b }
    end
  }
- rule :lb { str "b" }
 
- node :lc {
-   def val
-     "C"
+ node :expression {
+   def result
+     operator.apply(numbers.map &.val)
    end
  }
- rule :lc { str "c" }
 
- rule :letter { str "" }
+ rule :number { match(/\d+/) }
+ rule :plus { str("+") }
+ rule :minus { str("-") }
+ rule :operator { plus | minus }
+ rule :expression { number >> operator >> number }
 
- onion :letter, [:la, :lb, :lc] {
-   abstract def val
- }
- 
- root :letter
+ root :expression
 end
 
-puts Expression.parse(ARGV[0]).onion.val
+puts Exemple::Expression.parse(ARGV[0]).result

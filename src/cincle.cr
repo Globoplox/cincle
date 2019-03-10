@@ -2,7 +2,7 @@ require "lingo"
 
 module Cincle
 
-  VERSION = "0_2_0"
+  VERSION = "0_2_1"
   
   macro included
     RULES = {} of Object => Object
@@ -41,6 +41,14 @@ module Cincle
         def onion
           [\{{ (children.map { |child| "#{child.underscore.id}?".id } ).splat }}].compact.first.as(\{{ "Unions::#{symbol.camelcase.id}".id }})
         end
+        #include \{ { "Unions::#{symbol.camelcase.id}".id }}
+        macro method_missing(call)
+          \\{% if call.args.size >= 1 %}
+            onion.\\{{call.name}}(\\{{call.args}})
+          \\{% else %}
+            onion.\\{{call.name}}()
+          \\{% end %}
+        end                                                                                                                                                                                           
       }
       rule \{{symbol}} { \{{ ((children.map &.id).join "|").id }} }
     end
