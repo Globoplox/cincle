@@ -2,7 +2,7 @@ require "lingo"
 
 module Cincle
 
-  VERSION = "0_2_1"
+  VERSION = "0_2_2"
   
   macro included
     RULES = {} of Object => Object
@@ -91,8 +91,10 @@ module Cincle
       module Nodes
         \{% for name, block in RULES %}
           class \{{name.camelcase.id}} < Node
-            \{% if (NODES[name] && NODES[name][:block]) %}
-              \{{ NODES[name][:block].body }}
+            \{% if (NODES[name]) %}
+              \{% if NODES[name][:block] %}
+                \{{ NODES[name][:block].body }}
+              \{%end %}
               \{% for interface in NODES[name][:super] %}
                 include \{{interface.id}}
               \{% end %}
