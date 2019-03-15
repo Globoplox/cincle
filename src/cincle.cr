@@ -1,8 +1,6 @@
 require "lingo"
 
 module Cincle
-
-  VERSION = "0_2_2"
   
   macro included
     RULES = {} of Object => Object
