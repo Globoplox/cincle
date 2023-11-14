@@ -1,5 +1,8 @@
 # Cincle
 
+This is an old pet project. I keep it for the sake of it. 
+I used it here [globoplox/dice](https://github.com/Globoplox/dice/tree/master).
+
 Cincle is a layer added to the Lingo parser generator.
 It aim to help to build meaningfull ast by altering the parser, generating a default visitor, and extensibles nodes for each rules.
 
